@@ -9,3 +9,35 @@ services:
             - MONGO_INITDB_ROOT_PASSWORD=secret
         ports:
             - 27017:27017
+        volumes:
+            - mongodb_data:/data/db
+
+    # mongo-init:
+    #     build: ../mongo-db-database  # Path to your MongoDB repository containing mongo.py
+    #     container_name: mongo-init
+    #     depends_on:
+    #         - mongodb
+    #     command: ["python3", "/mongo.py"]  # Adjust path if needed
+    
+    backend:
+        build: ../java_backend
+        container_name: java_backend
+        restart: always
+        ports:
+            - "8080:8080"
+        environment:
+            - mongodb://user:secret@localhost:27017/recipebook?authSource=admin
+        depends_on:
+            - mongodb
+
+    frontend:
+        build: ../recipe-book/recipe-book
+        container_name: recipe-book
+        restart: always
+        ports:
+            - "4200:80"
+        depends_on:
+            - backend
+
+volumes:
+    mongodb_data: {}

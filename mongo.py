@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 # Create a MongoClient instance
-client = MongoClient('mongodb://user:secret@localhost:27017/')
+client = MongoClient('mongodb://user:secret@mongodb:27017/')
 
 # Access a database
 db = client['recipebook']
